@@ -30,7 +30,7 @@ used with [Teng](https://metacpan.org/pod/Teng).
 
 # METHODS
 
-## `Subclass->new(%args | \%args)`
+## Subclass->new(%args | \\%args)
 
 Returns a new instance of a Teng::Test::Fixture subclass. It performs various
 checks against the fixtures definitions and eventually dies when an error is
@@ -66,6 +66,8 @@ Return true if a fixture named `$name` has already been loaded and false
 otherwise.
 
 # FIXTURES
+
+For a more comple example, you can look at `t/lib/My/Fixtures.pm`.
 
 Fixture definitions are usually declared in a hash using the following 
 syntax :
