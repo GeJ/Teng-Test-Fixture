@@ -108,3 +108,28 @@ sub _remove_unresolved {
 1;
 
 __END__
+
+=encoding utf-8
+
+=head1 NAME
+
+Teng::Test::Fixture::DependencyResolver
+
+=head1 DESCRIPTION
+
+This module is used internally by L<Teng::Test::Fixture> and probably should
+not be called directly.
+
+=head1 LICENSE
+
+Copyright (C) Geraud CONTINSOUZAS.
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=head1 AUTHOR
+
+Geraud CONTINSOUZAS E<lt>gcs at cpan.orgE<gt>
+
+=cut
+
