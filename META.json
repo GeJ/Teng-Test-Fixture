@@ -56,9 +56,19 @@
    },
    "release_status" : "unstable",
    "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/GeJ/Teng-Test-Fixture/issues"
+      },
+      "homepage" : "https://github.com/GeJ/Teng-Test-Fixture",
       "repository" : {
-         "url" : "ssh://geraud@edna.nealab.net/home/geraud/code/_repos/Teng-Test-Fixture.git"
+         "type" : "git",
+         "url" : "git://github.com/GeJ/Teng-Test-Fixture.git",
+         "web" : "https://github.com/GeJ/Teng-Test-Fixture"
       }
    },
-   "version" : "0.01"
+   "version" : "0.01",
+   "x_contributors" : [
+      "Géraud CONTINSOUZAS <geraud@gcu.info>",
+      "Geraud CONTINSOUZAS <gcs@cpan.org>"
+   ]
 }
