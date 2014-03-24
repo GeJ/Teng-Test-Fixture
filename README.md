@@ -42,17 +42,17 @@ _%args_ are :
 
     A [Teng](https://metacpan.org/pod/Teng) instance.
 
-## `$fixture->all_fixture_names() :Array[Str]`
+## $fixture->all\_fixture\_names() :Array\[Str\]
 
 This method __MUST__ be implemented in the subclass. It returns a list of the
 names of all the defined fixtures.
 
-## `$fixture->get_definition($name :Str) :HashRef`
+## $fixture->get\_definition($name :Str) :HashRef
 
 This method __MUST__ be implemented in the subclass. It returns a hash
 reference with the definition of the fixture named `$name`.
 
-## `$fixture->load($name :Str | @names :Array[Str])`
+## $fixture->load($name :Str | @names :Array\[Str\])
 
 Load the fixture named `$name`. It is possible to load several fixtures with
 one method call by using a list of names.
@@ -60,15 +60,14 @@ one method call by using a list of names.
 In scalar context this method will return the first fixture loaded. In list
 context it will return all the fixtures that were called in the invocation.
 
-Note : group fixtures are expanded.
+## $fixture->is\_loaded($name :Str) :Bool
 
-## `$fixture->is_loaded($name :Str) :Bool`
-
-Return whether a fixture name `$name` has already been loaded.
+Return true if a fixture named `$name` has already been loaded and false
+otherwise.
 
 # FIXTURES
 
-Fixture definitions are usually declare in a hash using the following 
+Fixture definitions are usually declared in a hash using the following 
 syntax :
 
     $fixture_name => {
@@ -84,16 +83,16 @@ where :
 
 - `$fixture_name` is the unique name for your fixture.
 - `$table` is the name of the table as it is defined in your [Teng::Schema](https://metacpan.org/pod/Teng::Schema)
-- `$columnN` and `$valueN` are the names and values to use to create your object
+- `$columnN` and `$valueN` are the names and values to use for your object
 
 ## Using another fixture
 
 In the case of say a foreign key, you may want to use the result of another
 fixture when creating a new one.
 
-Let's say that we have a `company` table with an `id` and a `name` column
+Let's say that we have a `company` table with an `id` and a `name` columns
 and we want to add some employees to it. There are several ways to achieve
-result :
+this result :
 
     'some_company' => {
         new   => 'company',
@@ -111,9 +110,8 @@ result :
         }
     },
 
-You will declare that the _first\_employee_ fixture will need
-_some\_company_ and take the object's `id` value and use this for its own
-`company_id` column.
+You declare that the _first\_employee_ fixture will need _some\_company_ and
+take the object's `id` value and use this for its own `company_id` column.
 
 This is the most verbose syntax and it can be simplified like this :
 
@@ -122,18 +120,18 @@ This is the most verbose syntax and it can be simplified like this :
         using => {
             first_name => 'Ford',
             last_name  => 'Prefect',
-            company_id => { 'some_company' => 'id' },
+            company_id => { 'some_company' => 'id' }, # using a hash reference
         },
     },
 
-or,
+or like this :
 
     'third_employee' => {
         new   => 'employee',
         using => {
             first_name => 'Zaphod',
             last_name  => 'Beeblebrox',
-            company_id => [ 'some_company' => 'id' ],
+            company_id => [ 'some_company', 'id' ], # using an array reference
         },
     },
 
@@ -145,7 +143,7 @@ a `company_id` column), this could have shortened as :
         using => {
             first_name => 'Tricia',
             last_name  => 'McMillan',
-            company_id => \'some_company',
+            company_id => \'some_company', # using a scalar reference
         }
     },
 
@@ -176,6 +174,8 @@ like this :
 
 Note : this fixture is not yet implemented in [DBIx::Class::EasyFixture](https://metacpan.org/pod/DBIx::Class::EasyFixture).
 
+'Requires' fixtures are not returned when calling `$fixture->load()`.
+
 ## Using additional fixtures
 
 After loading an object, you may need to create other objects in other tables
@@ -191,6 +191,8 @@ one. You need to write :
 
 This will make sure that calling `$fixtures->load('some_employee')` will
 also load `some_parking_spot`, `some_desk` and `some_gym_membership`.
+
+'Next' fixtures are not returned when calling `$fixture->load()`.
 
 ## Group fixtures
 

@@ -218,17 +218,17 @@ A L<Teng> instance.
 
 =back
 
-=head2 C<< $fixture->all_fixture_names() :Array[Str] >>
+=head2 $fixture->all_fixture_names() :Array[Str]
 
 This method B<MUST> be implemented in the subclass. It returns a list of the
 names of all the defined fixtures.
 
-=head2 C<< $fixture->get_definition($name :Str) :HashRef >>
+=head2 $fixture->get_definition($name :Str) :HashRef
 
 This method B<MUST> be implemented in the subclass. It returns a hash
 reference with the definition of the fixture named C<$name>.
 
-=head2 C<< $fixture->load($name :Str | @names :Array[Str]) >>
+=head2 $fixture->load($name :Str | @names :Array[Str])
 
 Load the fixture named C<$name>. It is possible to load several fixtures with
 one method call by using a list of names.
@@ -236,15 +236,14 @@ one method call by using a list of names.
 In scalar context this method will return the first fixture loaded. In list
 context it will return all the fixtures that were called in the invocation.
 
-Note : group fixtures are expanded.
+=head2 $fixture->is_loaded($name :Str) :Bool
 
-=head2 C<< $fixture->is_loaded($name :Str) :Bool >>
-
-Return whether a fixture name C<$name> has already been loaded.
+Return true if a fixture named C<$name> has already been loaded and false
+otherwise.
 
 =head1 FIXTURES
 
-Fixture definitions are usually declare in a hash using the following 
+Fixture definitions are usually declared in a hash using the following 
 syntax :
 
     $fixture_name => {
@@ -264,7 +263,7 @@ where :
 
 =item C<$table> is the name of the table as it is defined in your L<Teng::Schema>
 
-=item C<$columnN> and C<$valueN> are the names and values to use to create your object
+=item C<$columnN> and C<$valueN> are the names and values to use for your object
 
 =back
 
@@ -273,9 +272,9 @@ where :
 In the case of say a foreign key, you may want to use the result of another
 fixture when creating a new one.
 
-Let's say that we have a C<company> table with an C<id> and a C<name> column
+Let's say that we have a C<company> table with an C<id> and a C<name> columns
 and we want to add some employees to it. There are several ways to achieve
-result :
+this result :
 
     'some_company' => {
         new   => 'company',
@@ -293,9 +292,8 @@ result :
         }
     },
 
-You will declare that the I<first_employee> fixture will need
-I<some_company> and take the object's C<id> value and use this for its own
-C<company_id> column.
+You declare that the I<first_employee> fixture will need I<some_company> and
+take the object's C<id> value and use this for its own C<company_id> column.
 
 This is the most verbose syntax and it can be simplified like this :
 
@@ -304,18 +302,18 @@ This is the most verbose syntax and it can be simplified like this :
         using => {
             first_name => 'Ford',
             last_name  => 'Prefect',
-            company_id => { 'some_company' => 'id' },
+            company_id => { 'some_company' => 'id' }, # using a hash reference
         },
     },
 
-or,
+or like this :
 
     'third_employee' => {
         new   => 'employee',
         using => {
             first_name => 'Zaphod',
             last_name  => 'Beeblebrox',
-            company_id => [ 'some_company' => 'id' ],
+            company_id => [ 'some_company', 'id' ], # using an array reference
         },
     },
 
@@ -327,7 +325,7 @@ a C<company_id> column), this could have shortened as :
         using => {
             first_name => 'Tricia',
             last_name  => 'McMillan',
-            company_id => \'some_company',
+            company_id => \'some_company', # using a scalar reference
         }
     },
 
@@ -357,6 +355,8 @@ like this :
     }
 
 Note : this fixture is not yet implemented in L<DBIx::Class::EasyFixture>.
+            
+'Requires' fixtures are not returned when calling C<< $fixture->load() >>.
 
 =head2 Using additional fixtures
 
@@ -373,6 +373,8 @@ one. You need to write :
 
 This will make sure that calling C<< $fixtures->load('some_employee') >> will
 also load C<some_parking_spot>, C<some_desk> and C<some_gym_membership>.
+
+'Next' fixtures are not returned when calling C<< $fixture->load() >>.
 
 =head2 Group fixtures
 
